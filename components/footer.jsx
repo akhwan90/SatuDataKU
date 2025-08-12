@@ -4,8 +4,8 @@ import { FaInstagram, FaFacebookF, FaYoutube } from "react-icons/fa"
 
 export default function Footer() {
   return (
-    <footer className="bg-slate-800 text-white rounded-t-2xl shadow-inner py-4">
-      <div className="max-w-7xl mx-auto flex flex-col gap-6 px-6">
+    <footer className="bg-slate-800 text-white rounded-t-2xl shadow-inner">
+      <div className="max-w-7xl mx-auto flex flex-col gap-6 px-6 py-6">
         <div className="flex items-center gap-3 pt-2">
           <Image src="/assets/favicon.png" alt="Logo" width={30} height={30} />
           <div>

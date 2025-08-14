@@ -1,10 +1,14 @@
 import React from 'react'
 import { HiTrendingDown, HiTrendingUp } from 'react-icons/hi'
+import { TbFileSad } from 'react-icons/tb'
 
-const Kartu = ({ status, tahunA, persenA, tahunB, persenB, caption }) => {
-  const isTurun = status === 'turun'
-  const Icon = isTurun ? HiTrendingDown : HiTrendingUp
-  const label = isTurun ? 'Turun' : 'Naik'
+const Kartu = ({ tahunA, persenA, tahunB, persenB, caption }) => {
+  const isNA = persenA === "N/A" || persenB === "N/A"
+  const valueA = isNA ? null : parseFloat(persenA)
+  const valueB = isNA ? null : parseFloat(persenB)
+  const isTurun = !isNA && valueB < valueA
+  const Icon = isNA ? TbFileSad : (isTurun ? HiTrendingDown : HiTrendingUp)
+  const label = isNA ? "-" : (isTurun ? "Turun" : "Naik")
 
   return (
     <div className="group bg-gradient-to-b from-[#01BBA6] to-[#028b86] text-white rounded-2xl shadow-sm ring ring-gray-900/5 px-6 py-6 w-full mx-auto text-center transition-all ease-in-out duration-300 hover:-translate-y-1 hover:shadow-lg hover:ring-2">

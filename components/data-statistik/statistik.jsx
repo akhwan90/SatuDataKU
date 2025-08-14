@@ -4,40 +4,35 @@ import Kartu from './kartu'
 import dataKategori from './data'
 
 export default function DataStatistik() {
-  const scrollContainerRef = useRef(null)
+  const scrollRef = useRef(null)
   const [activeIndex, setActiveIndex] = useState(0)
 
   useEffect(() => {
-    const container = scrollContainerRef.current
+    const container = scrollRef.current
     if (!container) return
-
-    const handleScroll = () => {
-      const index = Math.round(container.scrollLeft / (container.firstChild?.offsetWidth || 1))
-      setActiveIndex(index)
-    }
-
-    container.addEventListener('scroll', handleScroll)
-    return () => container.removeEventListener('scroll', handleScroll)
+    const onScroll = () => setActiveIndex(Math.round(container.scrollLeft / (container.firstChild?.offsetWidth || 1)))
+    container.addEventListener('scroll', onScroll, { passive: true })
+    return () => container.removeEventListener('scroll', onScroll)
   }, [])
 
   return (
     <section className="px-6 py-20 max-w-7xl mx-auto">
-
-      {/* judul & Subjudul */}
+      {/* Judul & Subjudul */}
       <div className="text-center mb-10">
         <h2 className="text-2xl md:text-3xl font-bold text-[#01BBA6]">Data Statistik Sektoral</h2>
         <p className="text-slate-800 mt-1">Data sektoral menggambarkan kondisi spesifik sektor</p>
       </div>
 
+      {/* Grid desktop */}
       <div className="hidden md:grid md:grid-cols-4 gap-6">
         {dataKategori.map((item, i) => <Kartu key={i} {...item} />)}
       </div>
 
-      {/* Slider Ccontainer - mobile */}
-      <div className="md:hidden">
-        <div ref={scrollContainerRef} className="card-wrapper flex gap-6 overflow-x-auto snap-x snap-mandatory px-4 -mx-4 scroll-smooth">
+      {/* Slider mobile */}
+      <div className="md:hidden mt-10">
+        <div ref={scrollRef} className="card-wrapper flex gap-6 overflow-x-auto snap-x snap-mandatory scroll-smooth px-4 -mx-4">
           {dataKategori.map((item, i) => (
-            <div key={i} className="snap-center shrink-0 w-full max-w-sm mx-auto">
+            <div key={i} className="snap-center shrink-0 w-full max-w-sm">
               <Kartu {...item} />
             </div>
           ))}

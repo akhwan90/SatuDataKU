@@ -1,11 +1,21 @@
 'use client'
-import React, { useRef, useState, useEffect } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import Kartu from './kartu'
 import dataKategori from './data'
+import { useRouter } from 'next/navigation'
 
 export default function DataStatistik() {
   const scrollRef = useRef(null)
   const [activeIndex, setActiveIndex] = useState(0)
+  const router = useRouter()
+  const handleSelectFilter = (type, value) => {
+    if (!value) return
+    const query =
+      type === 'opd'
+        ? `?opd=${encodeURIComponent(value)}`
+        : `?urusan=${encodeURIComponent(value)}`
+    router.push(`/statistik${query}`)
+  }
 
   useEffect(() => {
     const container = scrollRef.current
@@ -25,15 +35,34 @@ export default function DataStatistik() {
 
       {/* Grid desktop */}
       <div className="hidden md:grid md:grid-cols-4 gap-6">
-        {dataKategori.map((item, i) => <Kartu key={i} {...item} />)}
+        {dataKategori.map(({ title, description, jumlahData, imageSrc, type, filterValue }, i) => (
+          <Kartu
+            key={i}
+            title={title}
+            description={description}
+            jumlahData={jumlahData}
+            imageSrc={imageSrc}
+            type={type}
+            filterValue={filterValue}
+            onClick={() => handleSelectFilter(type, filterValue)}
+          />
+        ))}
       </div>
 
       {/* Slider mobile */}
       <div className="md:hidden mt-10">
         <div ref={scrollRef} className="card-wrapper flex gap-6 overflow-x-auto snap-x snap-mandatory scroll-smooth px-4 -mx-4">
-          {dataKategori.map((item, i) => (
+          {dataKategori.map(({ title, description, jumlahData, imageSrc, type, filterValue }, i) => (
             <div key={i} className="snap-center shrink-0 w-full max-w-sm">
-              <Kartu {...item} />
+              <Kartu
+                title={title}
+                description={description}
+                jumlahData={jumlahData}
+                imageSrc={imageSrc}
+                type={type}
+                filterValue={filterValue}
+                onClick={() => handleSelectFilter(type, filterValue)}
+              />
             </div>
           ))}
         </div>

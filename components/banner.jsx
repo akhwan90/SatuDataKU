@@ -17,7 +17,7 @@ const Banner = () => {
 
           {/* Search bar */}
           <div className="mt-12 flex flex-wrap items-center justify-center rounded-full border-2 border-slate-100/60 bg-white/50 ps-4 pe-1 backdrop-blur-md transition duration-300 focus-within:border-[#01BBA6] focus-within:shadow-[0_0_6px_#01BBA6] focus-within:ring-2 focus-within:ring-[#01BBA6]/30">
-            <input type="text" placeholder="Cari data..." className="w-full flex-1 bg-transparent py-2 text-slate-800 placeholder:text-slate-800/50 focus:outline-none" />
+            <input type="search" placeholder="Cari data..." className="w-full flex-1 bg-transparent py-2 text-slate-800 placeholder:text-slate-800/50 focus:outline-none" />
             <button className="flex cursor-pointer items-center gap-2 rounded-full bg-gradient-to-r from-[#01BBA6] to-[#007686] px-4 py-2 text-sm text-white transition duration-300 hover:from-[#007686] hover:to-[#005C66] active:from-[#007686] active:to-[#005C66]">
               <FaSearch className="h-4 w-4" /> Cari
             </button>

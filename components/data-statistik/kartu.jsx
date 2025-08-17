@@ -42,7 +42,7 @@ const Kartu = ({ title, description, infoData, imageSrc, onClick, isPending }) =
 
       {/* Tombol */}
       {isPending ? (
-        <button disabled className="rounded-full bg-gray-400 mt-4 px-4 py-2 text-sm text-white cursor-not-allowed transition duration-300 w-[150px]">
+        <button disabled className="rounded-full bg-gray-400 mt-4 px-4 py-2 text-sm text-white cursor-not-allowed transition duration-300">
           <div className="flex gap-2">
             <ImSpinner2 className="animate-spin my-auto" /> Memuat
           </div>

@@ -1,18 +1,20 @@
-'use client'
-import { useRef, useState, useEffect } from 'react'
-import Kartu from './kartu'
+"use client"
+import { useRef, useState, useEffect } from "react"
+import Kartu from "./kartu"
 
 export default function IndikatorLayout({ data }) {
     const scrollRef = useRef(null)
     const [activeIndex, setActiveIndex] = useState(0)
 
+    // fungsi scroll snap saat mobile
     useEffect(() => {
         const container = scrollRef.current
         if (!container) return
         const onScroll = () => setActiveIndex(Math.round(container.scrollLeft / (container.firstChild?.offsetWidth || 1)))
-        container.addEventListener('scroll', onScroll, { passive: true })
-        return () => container.removeEventListener('scroll', onScroll)
+        container.addEventListener("scroll", onScroll, { passive: true })
+        return () => container.removeEventListener("scroll", onScroll)
     }, [])
+    // ---------------------------------------------------------------------------------
 
     return (
         <div className="bg-[#EDFCED]">

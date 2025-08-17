@@ -2,12 +2,15 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { FaSearch } from "react-icons/fa";
+import { ImSpinner2 } from 'react-icons/im';
 
 export default function SearchBar() {
-  const [keyword, setKeyword] = useState("");
-  const [isPending, startTransition] = useTransition();
-  const router = useRouter();
 
+  const [keyword, setKeyword] = useState("");  // State input
+  const [isPending, startTransition] = useTransition();   // Transition
+  const router = useRouter();   // Router
+
+  // jika user melakukan pencarian maka query dilempar atau diteruskan ke page data statistik
   const handleSearch = (e) => {
     e.preventDefault();
     const query = keyword.trim();
@@ -16,6 +19,7 @@ export default function SearchBar() {
       router.push(query ? `/statistik?q=${encodeURIComponent(query)}&page=1` : `/statistik`);
     });
   };
+  // ----------------------------------------------------------------------------------------
 
   return (
     // Banner utama dengan background image penuh layar
@@ -36,7 +40,7 @@ export default function SearchBar() {
             <input type="search" value={keyword} onChange={e => setKeyword(e.target.value)} placeholder="Cari data..." className="w-full flex-1 bg-transparent py-2 me-2 text-slate-800 placeholder:text-slate-800/50 focus:outline-none" />
             {isPending ? (
               <button disabled className="flex items-center gap-2 rounded-full bg-gray-400 px-4 py-2 text-sm text-white cursor-not-allowed transition duration-300">
-                <span className="h-4 w-4 animate-spin border-2 border-white border-t-transparent rounded-full cursor-pointer" /> Memuat
+                <ImSpinner2 className="animate-spin" /> Memuat
               </button>
             ) : (
               <button type="submit" className="flex items-center gap-2 rounded-full bg-gradient-to-r from-[#01BBA6] to-[#007686] px-4 py-2 text-sm text-white transition duration-300 hover:from-[#007686] hover:to-[#005C66] active:from-[#007686] active:to-[#005C66] cursor-pointer">

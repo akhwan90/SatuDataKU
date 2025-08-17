@@ -1,6 +1,6 @@
 "use client";
 
-import * as XLSX from "xlsx";
+import ExcelJS from "exceljs";
 
 export default function ExportButtons({ datas, years }) {
   const handleExportJSON = () => {
@@ -14,33 +14,35 @@ export default function ExportButtons({ datas, years }) {
     URL.revokeObjectURL(url);
   };
 
-  const handleExportExcel = () => {
-    let counter = 1; // untuk nomor urut
-    const rows = Object.values(datas).map(({ metadata, data }) => {
-      const row = {
-        No: counter++, // nomor urut
-        "Nama Elemen": metadata.nama_elemen,
-        Satuan: metadata.satuan,
-      };
-      years.forEach((y) => {
-        row[y] = data[y]?.value ?? "";
-      });
-      return row;
+  const handleExportExcel = async () => {
+    let counter = 1;
+    const workbook = new ExcelJS.Workbook();
+    const sheet = workbook.addWorksheet("Data");
+
+    // header
+    sheet.addRow(["No", "Nama Elemen", "Satuan", ...years]);
+
+    // isi data
+    Object.values(datas).forEach(({ metadata, data }) => {
+      const row = [
+        counter++,
+        metadata.nama_elemen,
+        metadata.satuan,
+        ...years.map((y) => data[y]?.value ?? ""),
+      ];
+      sheet.addRow(row);
     });
-  
-    // atur urutan kolom: No → Nama Elemen → Satuan → Tahun
-    const headerOrder = [
-      "No",
-      "Nama Elemen",
-      "Satuan",
-      ...years
-    ];
-    const ws = XLSX.utils.json_to_sheet(rows, { header: headerOrder });
-    
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "Data");
-    XLSX.writeFile(wb, "data.xlsx");
-  };  
+
+    // generate file dan download
+    const buffer = await workbook.xlsx.writeBuffer();
+    const blob = new Blob([buffer], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "data.xlsx";
+    a.click();
+    URL.revokeObjectURL(url);
+  };
 
   return (
     <div className="flex gap-2">

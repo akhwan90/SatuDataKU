@@ -21,6 +21,7 @@ const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const navRef = useRef(null);
 
+  // efek ketika tidak berada di top maka aktifkan background putih blur
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (navRef.current && !navRef.current.contains(e.target)) setIsOpen(false);
@@ -41,13 +42,13 @@ const Navbar = () => {
       {/* navbar Container */}
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-3" ref={navRef}>
         {/* navbar icon + name */}
-        <div className="flex items-center gap-2">
+        <Link href="/" className="flex items-center gap-2">
           <Image src="/assets/favicon.png" alt="Logo" width={29} height={29} style={{ width: "auto", height: "auto" }} />
           <div className="flex flex-col leading-tight">
             <span className="text-lg font-semibold">SatuData</span>
             <span className="text-xs">Kulon Progo</span>
           </div>
-        </div>
+        </Link>
 
         {/* hamburger button to open nav-menu */}
         <button onClick={() => setIsOpen(!isOpen)} className="absolute right-6 block focus:outline-none md:hidden" aria-label="Toggle menu">

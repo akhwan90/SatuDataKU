@@ -1,31 +1,37 @@
-'use client'
-import { useRef, useState, useEffect } from 'react'
-import Kartu from './kartu'
-import dataKategori from './value'
-import { useRouter, usePathname } from 'next/navigation'
+"use client"
+import { useRef, useState, useEffect } from "react"
+import Kartu from "./kartu"
+import dataKategori from "./value"
+import { useRouter, usePathname } from "next/navigation"
 
 export default function DataStatistik() {
   const scrollRef = useRef(null)
   const [activeIndex, setActiveIndex] = useState(0)
-  const [loading, setLoading] = useState(false)
+  const [loadingIndex, setLoadingIndex] = useState(null)  // <-- agar yang kena efek button loading hanya tombol yang ditekan saja
   const router = useRouter()
   const pathname = usePathname()
 
-  const handleSelectFilter = (type, value) => {
+  // fungsi memilih ke filter
+  const handleSelectFilter = (type, value, index) => {
     if (!value) return
-    setLoading(true)
+    setLoadingIndex(index)
     const query =
-      type === 'opd'
+      type === "opd"
         ? `?opd=${encodeURIComponent(value)}`
         : `?urusan=${encodeURIComponent(value)}`
     router.push(`/statistik${query}`)
   }
+  // ---------------------------------------------------------------------------------
+
 
   // Reset loading kalau sudah masuk ke /statistik
   useEffect(() => {
-    if (pathname.startsWith('/statistik')) setLoading(false)
+    if (pathname.startsWith("/statistik")) setLoadingIndex(null)
   }, [pathname])
+  // ---------------------------------------------------------------------------------
 
+
+  // fungsi scroll snap saat mobile
   useEffect(() => {
     const container = scrollRef.current
     if (!container) return
@@ -33,9 +39,10 @@ export default function DataStatistik() {
       setActiveIndex(
         Math.round(container.scrollLeft / (container.firstChild?.offsetWidth || 1))
       )
-    container.addEventListener('scroll', onScroll, { passive: true })
-    return () => container.removeEventListener('scroll', onScroll)
+    container.addEventListener("scroll", onScroll, { passive: true })
+    return () => container.removeEventListener("scroll", onScroll)
   }, [])
+  // ---------------------------------------------------------------------------------
 
   return (
     <section className="px-6 py-20 max-w-7xl mx-auto">
@@ -56,8 +63,8 @@ export default function DataStatistik() {
             imageSrc={imageSrc}
             type={type}
             filterValue={filterValue}
-            onClick={() => handleSelectFilter(type, filterValue)}
-            loading={loading}
+            onClick={() => handleSelectFilter(type, filterValue, i)}
+            isPending={loadingIndex === i}
           />
         ))}
       </div>
@@ -68,14 +75,15 @@ export default function DataStatistik() {
           {dataKategori.map(({ title, description, infoData, imageSrc, type, filterValue }, i) => (
             <div key={i} className="snap-center shrink-0 w-full max-w-sm">
               <Kartu
+                key={i}
                 title={title}
                 description={description}
                 infoData={infoData}
                 imageSrc={imageSrc}
                 type={type}
                 filterValue={filterValue}
-                onClick={() => handleSelectFilter(type, filterValue)}
-                loading={loading}
+                onClick={() => handleSelectFilter(type, filterValue, i)}
+                isPending={loadingIndex === i}
               />
             </div>
           ))}

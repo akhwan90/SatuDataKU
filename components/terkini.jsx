@@ -2,6 +2,7 @@
 import React from "react"
 import Image from "next/image"
 import { FaCheckCircle } from "react-icons/fa"
+import Link from 'next/link'
 
 // Data list untuk Data Sektoral
 const dataSektoral = [
@@ -28,13 +29,14 @@ const ListItems = ({ items }) => (
     ))}
   </ul>
 )
+// ------------------------------------------------------------------------------------------------
 
 const DataTerbaru = () => (
   <div className="bg-[#EDFCED]">
     <section className="px-6 py-20 max-w-7xl mx-auto">
       {/* Judul */}
       <div className="text-center mb-10">
-        <h2 className="text-2xl md:text-3xl font-bold text-[#01BBA6]">Data Terbaru</h2>
+        <h2 className="text-2xl md:text-3xl font-bold text-[#01BBA6]">Data Terkini</h2>
         <p className="text-slate-800 mt-1">
           Daftar data sektoral dan data spasial terbaru yang dipublikasikan
         </p>
@@ -48,7 +50,7 @@ const DataTerbaru = () => (
           <h3 className="text-lg font-bold text-slate-800 text-center mb-4">Data Sektoral</h3>
           <ListItems items={dataSektoral} />
           <div className="mt-6 text-center">
-            <button className="bg-gradient-to-r from-[#01BBA6] to-[#007686] text-white text-sm px-5 py-2 rounded-full hover:from-[#007686] hover:to-[#007686] transition-all">Lihat Selengkapnya</button>
+            <Link href="/statistik" className="bg-gradient-to-r from-[#01BBA6] to-[#007686] text-white text-sm px-5 py-2 rounded-full hover:from-[#007686] hover:to-[#007686] transition-all">Lihat Selengkapnya</Link>
           </div>
         </div>
 
@@ -56,7 +58,7 @@ const DataTerbaru = () => (
         <div className="bg-white rounded-2xl p-6 shadow-md border border-slate-800/20 flex flex-col items-center">
           <h3 className="text-lg font-bold text-slate-800 text-center mb-4">Data Spasial</h3>
           <Image src="/assets/kp.png" alt="Peta Kabupaten Purworejo" width={400} height={250} className="rounded-lg object-contain" />
-          <button className="mt-6 bg-gradient-to-r from-[#01BBA6] to-[#007686] text-white text-sm px-5 py-2 rounded-full hover:from-[#007686] hover:to-[#007686] transition-all">Lihat Selengkapnya</button>
+          <Link href="/" className="bg-gradient-to-r from-[#01BBA6] to-[#007686] text-white text-sm px-5 py-2 rounded-full hover:from-[#007686] hover:to-[#007686] transition-all">Lihat Selengkapnya</Link>
         </div>
       </div>
     </section>

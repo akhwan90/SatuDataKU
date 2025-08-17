@@ -8,6 +8,7 @@
   text-align: center;
 }
 
+/* pembungkus kartu agar tidak muncul horizontal scrollbar yang mengganggu */
 .card-wrapper::-webkit-scrollbar {
   display: none;
 }
@@ -15,6 +16,27 @@
 .card-wrapper {
   scrollbar-width: none;
 }
+
+/* ------------------------------------------------------------------------ */
+
+/* animasi popup */
+@keyframes popUp {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.pop-up {
+  animation: popUp 0.5s ease forwards;
+}
+
+/* --------------------------------------- */
 
 /* DESKTOP*/
 @media (min-width: 768px) {
@@ -36,6 +58,8 @@
   }
 }
 
+/* --------------------------------------- */
+
 /* MOBILE*/
 @media (max-width: 767px) {
   .nav-item::before {
@@ -54,3 +78,5 @@
     background-color: #01bba6;
   }
 }
+
+/* --------------------------------------- */

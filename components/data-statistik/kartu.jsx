@@ -41,15 +41,17 @@ const Kartu = ({ title, description, infoData, imageSrc, onClick, isPending }) =
       <p className="text-sm text-gray-600">{description}</p>
 
       {/* Tombol */}
-      {isPending ? (
-        <button disabled className="items-center gap-2 rounded-full bg-gray-400 px-4 py-2 text-sm text-white cursor-not-allowed transition duration-300">
-          <ImSpinner2 className="animate-spin" /> Memuat
-        </button>
-      ) : (
-        <button onClick={onClick} className="mt-4 bg-gradient-to-r from-[#01BBA6] to-[#007686] text-white px-4 py-2 rounded-full text-sm transition duration-300 hover:from-[#007686] hover:to-[#007686] cursor-pointer">
-          Lihat Data
-        </button>
-      )}
+      <div className="justify-center">
+        {isPending ? (
+          <button disabled className="flex items-center gap-2 rounded-full bg-gray-400 px-4 py-2 text-sm text-white cursor-not-allowed transition duration-300">
+            <ImSpinner2 className="animate-spin" /> Memuat
+          </button>
+        ) : (
+          <button onClick={onClick} className="mt-4 bg-gradient-to-r from-[#01BBA6] to-[#007686] text-white px-4 py-2 rounded-full text-sm transition duration-300 hover:from-[#007686] hover:to-[#007686] cursor-pointer">
+            Lihat Data
+          </button>
+        )}
+      </div>
     </div>
   )
 }

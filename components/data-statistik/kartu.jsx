@@ -24,7 +24,7 @@ const Kartu = ({ title, description, infoData, imageSrc, onClick, isPending }) =
   // ---------------------------------------------------------------
 
   return (
-    <div ref={ref} className={`group relative bg-white rounded-2xl p-6 w-full mx-auto text-center shadow-sm border border-slate-800/30 transition-all duration-300 transform hover:-translate-y-1 ${visible ? "pop-up" : "opacity-0"}`}>
+    <div ref={ref} className={`group bg-white rounded-2xl p-6 w-full mx-auto text-center shadow-sm border border-slate-800/30 transition-all duration-300 transform hover:-translate-y-1 ${visible ? "pop-up" : "opacity-0"}`}>
 
       {/* info Data di Pojok Kanan Atas */}
       <div className="absolute top-4 right-4 bg-[#01BBA6] text-white text-xs px-3 py-1 rounded-full shadow-sm">
@@ -41,17 +41,17 @@ const Kartu = ({ title, description, infoData, imageSrc, onClick, isPending }) =
       <p className="text-sm text-gray-600">{description}</p>
 
       {/* Tombol */}
-      <div className="justify-center">
-        {isPending ? (
-          <button disabled className="flex items-center gap-2 rounded-full bg-gray-400 px-4 py-2 text-sm text-white cursor-not-allowed transition duration-300">
-            <ImSpinner2 className="animate-spin" /> Memuat
-          </button>
-        ) : (
-          <button onClick={onClick} className="mt-4 bg-gradient-to-r from-[#01BBA6] to-[#007686] text-white px-4 py-2 rounded-full text-sm transition duration-300 hover:from-[#007686] hover:to-[#007686] cursor-pointer">
-            Lihat Data
-          </button>
-        )}
-      </div>
+      {isPending ? (
+        <button disabled className="rounded-full bg-gray-400 mt-4 px-4 py-2 text-sm text-white cursor-not-allowed transition duration-300 w-[150px]">
+          <div className="flex gap-2">
+            <ImSpinner2 className="animate-spin my-auto" /> Memuat
+          </div>
+        </button>
+      ) : (
+        <button onClick={onClick} className="bg-gradient-to-r from-[#01BBA6] to-[#007686] text-white mt-4 px-4 py-2 rounded-full text-sm transition duration-300 hover:from-[#007686] hover:to-[#007686] cursor-pointer">
+          Lihat Data
+        </button>
+      )}
     </div>
   )
 }

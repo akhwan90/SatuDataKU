@@ -1,5 +1,5 @@
 // app/statistik/page.jsx
-import { getList } from "../../api/api";
+import { getList } from "../../lib/api/dataset";
 import FilterSidebar from "./komponen/FilterSidebar"; // client component
 import SearchBar from "./komponen/SearchBar"; // client component
 import SortDropdown from "./komponen/SortDropdown"; // client component

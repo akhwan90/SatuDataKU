@@ -2,7 +2,7 @@ const dataKategori = [
   {
     title: 'Pendidikan',
     description: 'Data sektor pendidikan',
-    jumlahData: 120,
+    infoData: 'Urusan',
     imageSrc: '/assets/pendidikan.png',
     type: 'urusan',
     filterValue: '1-1'
@@ -10,7 +10,7 @@ const dataKategori = [
   {
     title: 'Kesehatan',
     description: 'Data statistik kesehatan',
-    jumlahData: 85,
+    infoData: 'Urusan',
     imageSrc: '/assets/kesehatan.png',
     type: 'urusan',
     filterValue: '1-2'
@@ -18,7 +18,7 @@ const dataKategori = [
   {
     title: 'Kependudukan',
     description: 'Data sektor kependudukan',
-    jumlahData: 64,
+    infoData: 'OPD',
     imageSrc: '/assets/kependudukan.png',
     type: 'opd',
     filterValue: '14'
@@ -26,7 +26,7 @@ const dataKategori = [
   {
     title: 'Kebudayaan',
     description: 'Kebudayaan',
-    jumlahData: 102,
+    infoData: 'Urusan',
     imageSrc: '/assets/wisata.png',
     type: 'urusan',
     filterValue: '2-16'

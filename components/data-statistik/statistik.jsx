@@ -1,7 +1,7 @@
 'use client'
 import { useRef, useState, useEffect } from 'react'
 import Kartu from './kartu'
-import dataKategori from './data'
+import dataKategori from './value'
 import { useRouter } from 'next/navigation'
 
 export default function DataStatistik() {
@@ -35,12 +35,12 @@ export default function DataStatistik() {
 
       {/* Grid desktop */}
       <div className="hidden md:grid md:grid-cols-4 gap-6">
-        {dataKategori.map(({ title, description, jumlahData, imageSrc, type, filterValue }, i) => (
+        {dataKategori.map(({ title, description, infoData, imageSrc, type, filterValue }, i) => (
           <Kartu
             key={i}
             title={title}
             description={description}
-            jumlahData={jumlahData}
+            infoData={infoData}
             imageSrc={imageSrc}
             type={type}
             filterValue={filterValue}
@@ -52,12 +52,12 @@ export default function DataStatistik() {
       {/* Slider mobile */}
       <div className="md:hidden mt-10">
         <div ref={scrollRef} className="card-wrapper flex gap-6 overflow-x-auto snap-x snap-mandatory scroll-smooth px-4 -mx-4">
-          {dataKategori.map(({ title, description, jumlahData, imageSrc, type, filterValue }, i) => (
+          {dataKategori.map(({ title, description, infoData, imageSrc, type, filterValue }, i) => (
             <div key={i} className="snap-center shrink-0 w-full max-w-sm">
               <Kartu
                 title={title}
                 description={description}
-                jumlahData={jumlahData}
+                infoData={infoData}
                 imageSrc={imageSrc}
                 type={type}
                 filterValue={filterValue}

@@ -2,13 +2,13 @@
 import React from 'react'
 import Image from 'next/image'
 
-const Kartu = ({ title, description, jumlahData, imageSrc, onClick }) => {
+const Kartu = ({ title, description, infoData, imageSrc, onClick }) => {
   return (
     <div className="group relative bg-white rounded-2xl p-6 w-full mx-auto text-center shadow-sm border border-slate-800/30 transition-all duration-300 transform hover:-translate-y-1">
 
-      {/* Jumlah Data di Pojok Kanan Atas */}
+      {/* info Data di Pojok Kanan Atas */}
       <div className="absolute top-4 right-4 bg-[#01BBA6] text-white text-xs px-3 py-1 rounded-full shadow-sm">
-        {jumlahData} data
+        {infoData}
       </div>
 
       {/* Gambar dengan efek zoom saat hover */}

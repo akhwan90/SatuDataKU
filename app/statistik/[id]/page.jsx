@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { getElemenDetail } from "../../../api/api";
+import { getElemenDetail } from "../../../lib/api/dataset";
 import TabelDetail from "../komponendetail/TabelDetail";
 import FilterTahun from "../komponendetail/FilterTahun";
 import KeteranganWarna from "../komponendetail/KeteranganWarna";

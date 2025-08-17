@@ -1,5 +1,5 @@
 import IndikatorLayout from './indikatorLayout'
-import { getIndikatorData } from '../../api/chain-indikator'
+import { getIndikatorData } from '../../lib/api/indikator'
 
 const dataDummy = [
   { caption: "Jumlah Penduduk Miskin (Dalam persen)", tahunA: "N/A", persenA: "N/A", tahunB: "N/A", persenB: "N/A" },

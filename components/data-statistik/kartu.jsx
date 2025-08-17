@@ -2,7 +2,7 @@
 import React from 'react'
 import Image from 'next/image'
 
-const Kartu = ({ title, description, infoData, imageSrc, onClick }) => {
+const Kartu = ({ title, description, infoData, imageSrc, onClick, loading }) => {
   return (
     <div className="group relative bg-white rounded-2xl p-6 w-full mx-auto text-center shadow-sm border border-slate-800/30 transition-all duration-300 transform hover:-translate-y-1">
 
@@ -21,7 +21,15 @@ const Kartu = ({ title, description, infoData, imageSrc, onClick }) => {
       <p className="text-sm text-gray-600">{description}</p>
 
       {/* Tombol */}
-      <button onClick={onClick} className="mt-4 bg-gradient-to-r from-[#01BBA6] to-[#007686] text-white px-4 py-2 rounded-full text-sm transition duration-300 hover:from-[#007686] hover:to-[#007686] cursor-pointer">Lihat Data</button>
+      {loading ? (
+        <button disabled className="mt-4 flex items-center gap-2 rounded-full bg-gray-400 px-4 py-2 text-sm text-white cursor-not-allowed transition duration-300">
+          <span className="h-4 w-4 animate-spin border-2 border-white border-t-transparent rounded-full" /> Memuat Data
+        </button>
+      ) : (
+        <button onClick={onClick} className="mt-4 bg-gradient-to-r from-[#01BBA6] to-[#007686] text-white px-4 py-2 rounded-full text-sm transition duration-300 hover:from-[#007686] hover:to-[#007686] cursor-pointer">
+          Lihat Data
+        </button>
+      )}
     </div>
   )
 }

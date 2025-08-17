@@ -2,14 +2,18 @@
 import { useRef, useState, useEffect } from 'react'
 import Kartu from './kartu'
 import dataKategori from './value'
-import { useRouter } from 'next/navigation'
+import { useRouter, usePathname } from 'next/navigation'
 
 export default function DataStatistik() {
   const scrollRef = useRef(null)
   const [activeIndex, setActiveIndex] = useState(0)
+  const [loading, setLoading] = useState(false)
   const router = useRouter()
+  const pathname = usePathname()
+
   const handleSelectFilter = (type, value) => {
     if (!value) return
+    setLoading(true)
     const query =
       type === 'opd'
         ? `?opd=${encodeURIComponent(value)}`
@@ -17,10 +21,18 @@ export default function DataStatistik() {
     router.push(`/statistik${query}`)
   }
 
+  // Reset loading kalau sudah masuk ke /statistik
+  useEffect(() => {
+    if (pathname.startsWith('/statistik')) setLoading(false)
+  }, [pathname])
+
   useEffect(() => {
     const container = scrollRef.current
     if (!container) return
-    const onScroll = () => setActiveIndex(Math.round(container.scrollLeft / (container.firstChild?.offsetWidth || 1)))
+    const onScroll = () =>
+      setActiveIndex(
+        Math.round(container.scrollLeft / (container.firstChild?.offsetWidth || 1))
+      )
     container.addEventListener('scroll', onScroll, { passive: true })
     return () => container.removeEventListener('scroll', onScroll)
   }, [])
@@ -45,6 +57,7 @@ export default function DataStatistik() {
             type={type}
             filterValue={filterValue}
             onClick={() => handleSelectFilter(type, filterValue)}
+            loading={loading}
           />
         ))}
       </div>
@@ -62,6 +75,7 @@ export default function DataStatistik() {
                 type={type}
                 filterValue={filterValue}
                 onClick={() => handleSelectFilter(type, filterValue)}
+                loading={loading}
               />
             </div>
           ))}

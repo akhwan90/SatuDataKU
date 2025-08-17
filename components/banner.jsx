@@ -1,24 +1,21 @@
 "use client";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { FaSearch } from "react-icons/fa";
 
 export default function SearchBar() {
   const [keyword, setKeyword] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [isPending, startTransition] = useTransition();
   const router = useRouter();
 
   const handleSearch = (e) => {
     e.preventDefault();
-    setLoading(true);
     const query = keyword.trim();
     setKeyword("");
-    setTimeout(() => {
+    startTransition(() => {
       router.push(query ? `/statistik?q=${encodeURIComponent(query)}&page=1` : `/statistik`);
-      setLoading(false);
-    }, 800);
+    });
   };
-
 
   return (
     // Banner utama dengan background image penuh layar
@@ -37,7 +34,7 @@ export default function SearchBar() {
           {/* Search bar */}
           <form onSubmit={handleSearch} className="mt-12 flex items-center justify-center rounded-full border-2 border-slate-100/60 bg-white/50 ps-4 pe-1 backdrop-blur-md focus-within:border-[#01BBA6] focus-within:shadow-[0_0_6px_#01BBA6] focus-within:ring-2 focus-within:ring-[#01BBA6]/30">
             <input type="search" value={keyword} onChange={e => setKeyword(e.target.value)} placeholder="Cari data..." className="w-full flex-1 bg-transparent py-2 me-2 text-slate-800 placeholder:text-slate-800/50 focus:outline-none" />
-            {loading ? (
+            {isPending ? (
               <button disabled className="flex items-center gap-2 rounded-full bg-gray-400 px-4 py-2 text-sm text-white cursor-not-allowed transition duration-300">
                 <span className="h-4 w-4 animate-spin border-2 border-white border-t-transparent rounded-full cursor-pointer" /> Memuat
               </button>

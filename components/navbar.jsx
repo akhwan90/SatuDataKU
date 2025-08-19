@@ -8,10 +8,8 @@ import { useEffect, useRef, useState } from "react";
 const navItems = [
   { name: "Beranda", path: "/" },
   { name: "Data Statistik", path: "/statistik" },
-  { name: "Data Spasial", path: "/webready" },
-  { name: "Survei", path: "/survei" },
-  { name: "Feedback", path: "/feedback" },
-  { name: "Permohonan Data", path: "/permohonan" }
+  { name: "Data Spasial", path: "#" },
+  { name: "Layanan", path: "/layanan" },
 ];
 
 const Navbar = () => {
@@ -43,7 +41,7 @@ const Navbar = () => {
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-3" ref={navRef}>
         {/* navbar icon + name */}
         <Link href="/" className="flex items-center gap-2">
-          <Image src="/assets/favicon.png" alt="Logo" width={29} height={29} style={{ width: "auto", height: "auto" }} />
+          <Image src="/assets/favicon.png" alt="Logo" width={29} height={29} />
           <div className="flex flex-col leading-tight">
             <span className="text-lg font-semibold">SatuData</span>
             <span className="text-xs">Kulon Progo</span>
@@ -59,7 +57,7 @@ const Navbar = () => {
 
         {/* nav-menu */}
         <nav className={`absolute top-full right-6 mt-4 md:static md:mt-0 ${isOpen ? "block" : "hidden"} rounded-xl bg-white shadow-xl md:block md:rounded-none md:bg-transparent md:shadow-none`}>
-          <ul className="flex flex-col gap-4 p-5 text-sm md:flex-row md:p-0">
+          <ul className="flex flex-col gap-5 p-6 text-sm md:flex-row md:p-0">
             {navItems.map((item) => (
               <li key={item.path}>
                 <Link href={item.path}>

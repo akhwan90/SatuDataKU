@@ -1,15 +1,15 @@
 // app/statistik/page.jsx
 import { getList } from "../../lib/api/dataset";
-import FilterSidebar from "./komponen/FilterSidebar"; // client component
-import SearchBar from "./komponen/SearchBar"; // client component
-import SortDropdown from "./komponen/SortDropdown"; // client component
-import DatasetCard from "./komponen/DatasetCard"; // client component
-import Pagination from "./komponen/Pagination"; // client component
+import FilterSidebar from "./komponen/FilterSidebar";
+import SearchBar from "./komponen/SearchBar";
+import SortDropdown from "./komponen/SortDropdown";
+import DatasetCard from "./komponen/DatasetCard";
+import Pagination from "./komponen/Pagination";
 
 export const revalidate = 60; // ISR 60 detik
 
 export default async function StatistikPage({ searchParams }) {
-  const params = await searchParams; // ⬅️ wajib di-await sekarang
+  const params = await searchParams;
 
   const page = Number(params?.page || 1);
   const opd = params?.opd || "";
@@ -17,31 +17,46 @@ export default async function StatistikPage({ searchParams }) {
   const q = (params?.q || "").toLowerCase();
   const sort = params?.sort || "az";
 
-  // Ambil list data (SSR + ISR)
-  const dataResp = await getList({
-    page: 1, // ambil semua data untuk pagination manual
-    opd: opd || undefined,
-    urusan: urusan || undefined,
-    revalidate,
-  });
+  let datasets = [];
+  let totalFound = 0;
 
-  const datasets = dataResp?.datas?.data ?? [];
-  const totalFound =
-    dataResp?.datas?.total ??
-    dataResp?.datas?.data?.length ??
-    0;
+  // ✅ Jika ada pencarian, ambil semua page
+  if (q) {
+    let allData = [];
+    let currentPage = 1;
+    let lastPage = 1;
 
-  // Ambil kamus OPD & Urusan
-  const pInstansi =
-    dataResp?.pInstansi ??
-    (await getList({ page: 1 })).pInstansi ??
-    {};
-  const pUrusan =
-    dataResp?.pUrusan ??
-    (await getList({ page: 1 })).pUrusan ??
-    {};
+    do {
+      const resp = await getList({
+        page: currentPage,
+        opd: opd || undefined,
+        urusan: urusan || undefined,
+        revalidate,
+      });
 
-  // Filter berdasarkan q (server-side)
+      const data = resp?.datas?.data ?? [];
+      allData = [...allData, ...data];
+
+      lastPage = resp?.datas?.last_page ?? 1;
+      currentPage++;
+    } while (currentPage <= lastPage);
+
+    datasets = allData;
+    totalFound = allData.length;
+  } else {
+    // ✅ Kalau tidak ada search → cukup fetch sesuai page
+    const resp = await getList({
+      page,
+      opd: opd || undefined,
+      urusan: urusan || undefined,
+      revalidate,
+    });
+
+    datasets = resp?.datas?.data ?? [];
+    totalFound = resp?.datas?.total ?? datasets.length;
+  }
+
+  // Filter berdasarkan q (local filter setelah data terkumpul)
   let filtered = datasets;
   if (q) {
     filtered = filtered.filter(
@@ -49,6 +64,7 @@ export default async function StatistikPage({ searchParams }) {
         (it?.nama_elemen || "").toLowerCase().includes(q) ||
         (it?.nama_instansi || "").toLowerCase().includes(q)
     );
+    totalFound = filtered.length;
   }
 
   // Sort
@@ -59,12 +75,17 @@ export default async function StatistikPage({ searchParams }) {
     return A.localeCompare(B);
   });
 
-  // Pagination manual
+  // Pagination manual (hanya untuk hasil filter)
   const itemsPerPage = 10;
   const totalPages = Math.ceil(filtered.length / itemsPerPage);
   const startIndex = (page - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const paginatedData = filtered.slice(startIndex, endIndex);
+
+  // Ambil kamus OPD & Urusan (dari salah satu response)
+  const metaResp = await getList({ page: 1 });
+  const pInstansi = metaResp?.pInstansi ?? {};
+  const pUrusan = metaResp?.pUrusan ?? {};
 
   return (
     <div className="min-h-screen pt-20 bg-gradient-to-br from-green-50 via-white to-green-100">

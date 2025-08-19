@@ -9,7 +9,7 @@ export default function Footer() {
 
         {/* bagian kiri */}
         <div className="flex items-center gap-3 pt-2">
-          <Image src="/assets/favicon.png" alt="Logo" width={30} height={30} />
+          <Image src="/assets/favicon.png" className="object-contain" alt="Logo" width={30} height={30} />
           <div>
             <h2 className="font-bold text-xl leading-tight">Satu Data</h2>
             <p className="text-xs text-white/80">Kabupaten Kulon Progo</p>
@@ -17,24 +17,58 @@ export default function Footer() {
         </div>
 
         {/* bagian tengah */}
-        <div className="flex flex-col md:flex-row justify-between gap-8">
-          <div className="flex-1 text-xs text-white/90 space-y-3 leading-relaxed">
-            <div><p className="font-semibold">Alamat Kantor</p><p>Jl. Tamtama, Terbah, Wates, Kabupaten Kulon Progo, DIY 55651</p></div>
-            <div><p className="font-semibold">Telepon</p><p><a href="tel:0274773010" className="text-sky-300 underline">(0274) 773010</a></p></div>
-            <div><p className="font-semibold">Email</p><p><a href="mailto:kominfo@kulonprogokab.go.id" className="text-sky-300 underline">kominfo@kulonprogokab.go.id</a></p></div>
-          </div>
-          <div className="flex-1 text-xs text-white/90 space-y-4 md:pt-2">
-            <div className="flex items-center gap-2"><div className="text-base"><FaInstagram /></div><div><p className="font-semibold">Instagram</p><p className="text-xs text-white/70">lorem ipsum</p></div></div>
-            <div className="flex items-center gap-2"><div className="text-base"><FaFacebookF /></div><div><p className="font-semibold">Facebook</p><p className="text-xs text-white/70">lorem ipsum</p></div></div>
-            <div className="flex items-center gap-2"><div className="text-base"><FaYoutube /></div><div><p className="font-semibold">Youtube</p><p className="text-xs text-white/70">lorem ipsum</p></div></div>
-          </div>
-        </div>
+        <div className="flex flex-col md:flex-row justify-between gap-6">
 
-        {/* bagian kanan */}
+          {/* alamat, telpon, email */}
+          <div className="text-xs space-y-3 leading-relaxed">
+            <div>
+              <p className="font-bold">Alamat Kantor</p>
+              <p className="text-slate-300">Jl. Tamtama, Terbah, Wates, Kabupaten Kulon Progo, DIY 55651</p>
+            </div>
+            <div>
+              <p className="font-bold">Telepon</p>
+              <p className="text-slate-300">(0274) 773010</p>
+            </div>
+            <div>
+              <p className="font-bold">Email</p>
+              <a href="mailto:kominfo@kulonprogokab.go.id" className="text-slate-300">kominfo@kulonprogokab.go.id</a>
+            </div>
+          </div>
+
+          {/* sosmed */}
+          <div className="text-xs space-y-3 leading-relaxed">
+            <div className="flex gap-2 items-center">
+              <FaInstagram className="text-xl" />
+              <div>
+                <p className="font-bold">Instagram</p>
+                <a href="https://www.instagram.com/dinaskominfokp/" className="text-slate-300" target="_blank">@dinaskominfokp</a>
+              </div>
+            </div>
+            <div className="flex gap-2 items-center">
+              <FaFacebookF className="text-xl" />
+              <div>
+                <p className="font-bold">Facebook</p>
+                <a href="https://web.facebook.com/Kominfo.KP" className="text-slate-300" target="_blank">Kominfo Kulon Progo</a>
+              </div>
+            </div>
+            <div className="flex gap-2 items-center">
+              <FaYoutube className="text-xl" />
+              <div>
+                <p className="font-bold">Youtube</p>
+                <a href="https://www.youtube.com/channel/UC9_-BtLTD8oQ7druxMYWU2A" className="text-slate-300" target="_blank">Kulonprogo TV</a>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-3">
+            <a href="https://satudata.kulonprogokab.go.id/login" target="_blank" className="bg-slate-500 text-white px-5 py-2 rounded-md text-sm"> OPD Login</a>
+          </div>
+
+        </div>
 
       </div>
       <div className="w-full border-b border-white/20 my-4"></div>
       <div className="text-center pb-2"><small>© 2025 Dinas Kominfo Kabupaten Kulon Progo</small></div>
-    </footer>
+    </footer >
   )
 }

@@ -1,152 +1,150 @@
 // app/statistik/page.jsx
 import { getList } from "../../lib/api/dataset";
 import FilterSidebar from "./komponen/FilterSidebar";
+import FilterForMobile from "./komponen/FilterForMobile";
 import SearchBar from "./komponen/SearchBar";
-import SortDropdown from "./komponen/SortDropdown";
 import DatasetCard from "./komponen/DatasetCard";
 import Pagination from "./komponen/Pagination";
 
-export const revalidate = 60; // ISR 60 detik
+export const revalidate = 60;
 
 export default async function StatistikPage({ searchParams }) {
   const params = await searchParams;
-
   const page = Number(params?.page || 1);
   const opd = params?.opd || "";
   const urusan = params?.urusan || "";
   const q = (params?.q || "").toLowerCase();
   const sort = params?.sort || "az";
 
-  let datasets = [];
-  let totalFound = 0;
+  const itemsPerPageUI = 10;
+  const itemsPerApiPage = 100;
 
-  // ✅ Jika ada pencarian, ambil semua page
-  if (q) {
-    let allData = [];
-    let currentPage = 1;
-    let lastPage = 1;
+  // Ambil semua data dari API
+  let allDatasets = [];
+  let apiPage = 1;
+  let hasMore = true;
 
-    do {
-      const resp = await getList({
-        page: currentPage,
-        opd: opd || undefined,
-        urusan: urusan || undefined,
-        revalidate,
-      });
-
-      const data = resp?.datas?.data ?? [];
-      allData = [...allData, ...data];
-
-      lastPage = resp?.datas?.last_page ?? 1;
-      currentPage++;
-    } while (currentPage <= lastPage);
-
-    datasets = allData;
-    totalFound = allData.length;
-  } else {
-    // ✅ Kalau tidak ada search → cukup fetch sesuai page
+  while (hasMore) {
     const resp = await getList({
-      page,
+      page: apiPage,
       opd: opd || undefined,
       urusan: urusan || undefined,
       revalidate,
     });
 
-    datasets = resp?.datas?.data ?? [];
-    totalFound = resp?.datas?.total ?? datasets.length;
+    const data = resp?.datas?.data ?? [];
+    allDatasets.push(...data);
+
+    hasMore = data.length === itemsPerApiPage;
+    apiPage++;
+
+    // Simpan kamus OPD & Urusan dari halaman pertama
+    if (apiPage === 2) {
+      var pInstansi = resp?.pInstansi ?? {};
+      var pUrusan = resp?.pUrusan ?? {};
+    }
   }
 
-  // Filter berdasarkan q (local filter setelah data terkumpul)
-  let filtered = datasets;
+  let filtered = allDatasets;
+
+  // Filter search lokal
   if (q) {
     filtered = filtered.filter(
       (it) =>
         (it?.nama_elemen || "").toLowerCase().includes(q) ||
         (it?.nama_instansi || "").toLowerCase().includes(q)
     );
-    totalFound = filtered.length;
   }
 
-  // Sort
+  const totalFound = filtered.length;
+
+  // Sorting
   filtered = [...filtered].sort((a, b) => {
     const A = (a?.nama_elemen || "").toLowerCase();
     const B = (b?.nama_elemen || "").toLowerCase();
-    if (sort === "za") return B.localeCompare(A);
-    return A.localeCompare(B);
+    return sort === "za" ? B.localeCompare(A) : A.localeCompare(B);
   });
 
-  // Pagination manual (hanya untuk hasil filter)
-  const itemsPerPage = 10;
-  const totalPages = Math.ceil(filtered.length / itemsPerPage);
-  const startIndex = (page - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const paginatedData = filtered.slice(startIndex, endIndex);
+  // Slice untuk UI page
+  const startIndex = ((page - 1) % (itemsPerApiPage / itemsPerPageUI)) * itemsPerPageUI;
+  const paginatedData = filtered.slice(startIndex, startIndex + itemsPerPageUI);
 
-  // Ambil kamus OPD & Urusan (dari salah satu response)
-  const metaResp = await getList({ page: 1 });
-  const pInstansi = metaResp?.pInstansi ?? {};
-  const pUrusan = metaResp?.pUrusan ?? {};
+  const totalPagesUI = Math.ceil(totalFound / itemsPerPageUI);
 
   return (
-    <div className="min-h-screen pt-20 bg-gradient-to-br from-green-50 via-white to-green-100">
-      <div className="max-w-7xl mx-auto px-8 md:px-20">
+    // canvas utama dengan bg-image
+    <div className="w-full bg-[url('/assets/bg1.jpg')] bg-cover bg-center bg-no-repeat">
 
-        {/* Search + Sort */}
-        <div className="flex flex-col md:flex-row md:items-center gap-3 mb-4">
-          <div className="flex-1">
+      {/* section halaman utama */}
+      <section className="px-6 py-20 max-w-7xl mx-auto space-y-6">
+
+        {/* searchbar */}
+        <div className="w-full flex flex-col md:flex-row md:justify-end mb-4">
+          <div className="w-full md:w-96">
             <SearchBar initialQuery={q} />
-          </div>
-          <div className="w-full md:w-48">
-            <SortDropdown initialSort={sort} />
           </div>
         </div>
 
-        <div className="flex flex-col md:flex-row gap-6">
-          {/* Sidebar Filter */}
-          <aside className="w-full md:w-72 shrink-0">
+        {/* panel bawah */}
+        <div className="grid grid-cols-12 gap-3">
+
+          {/* panel kiri */}
+          {/* Mobile Filter Button + Modal */}
+          <div className="col-span-12">
+            <FilterForMobile opd={opd} pInstansi={pInstansi} urusan={urusan} pUrusan={pUrusan} />
+          </div>
+
+          {/* Sidebar hanya untuk desktop */}
+          <div className="hidden md:block md:col-span-4 bg-white/40 backdrop-blur-md rounded-xl border border-white/20 p-2">
             <FilterSidebar
               initialOpd={opd}
-              initialUrusan={urusan}
               pInstansi={pInstansi}
+              initialUrusan={urusan}
               pUrusan={pUrusan}
             />
-          </aside>
+          </div>
 
-          {/* Konten Utama */}
-          <main className="flex-1 space-y-4">
-            <h1 className="text-lg font-semibold">
-              {totalFound} Dataset Ditemukan
-            </h1>
-
-            <div className="space-y-3">
-              {paginatedData.map((item) => (
-                <DatasetCard
-                  key={item.id}
-                  item={item}
-                  currentPage={page}
-                  opd={opd}
-                  urusan={urusan}
-                  q={q}
-                  sort={sort}
-                />
-              ))}
-              {paginatedData.length === 0 && (
-                <div className="p-6 bg-white/80 border rounded-2xl text-gray-500">
-                  Tidak ada dataset yang cocok dengan pencarian.
-                </div>
-              )}
+          {/* panel kanan */}
+          <div className="col-span-12 md:col-span-8 flex flex-col bg-white/40 backdrop-blur-md rounded-xl border border-white/20 p-2">
+            <div className="w-full my-5">
+              <h1 className="text-slate-800 font-semibold">
+                Ditemukan : {totalFound} Dataset
+              </h1>
             </div>
 
-            <div className="pb-6">
+            {/* kartu dataset */}
+            <main className="flex-1 space-y-4">
+              <div className="space-y-3">
+                {paginatedData.map((item) => (
+                  <DatasetCard
+                    key={item.id}
+                    item={item}
+                    currentPage={page}
+                    opd={opd}
+                    urusan={urusan}
+                    q={q}
+                    sort={sort}
+                  />
+                ))}
+                {paginatedData.length === 0 && (
+                  <div className="p-6 bg-white/80 border rounded-2xl text-gray-500">
+                    Tidak ada dataset yang cocok dengan pencarian.
+                  </div>
+                )}
+              </div>
+            </main>
+
+            {/* pagination */}
+            <div className="mt-auto pb-6">
               <Pagination
                 currentPage={page}
-                totalPages={totalPages}
+                totalPages={totalPagesUI}
                 preserve={{ opd, urusan, q, sort }}
               />
             </div>
-          </main>
+          </div>
         </div>
-      </div>
+      </section>
     </div>
   );
 }

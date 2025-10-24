@@ -60,10 +60,11 @@ export default function Footer() {
             </div>
           </div>
 
+          {/*
           <div className="mt-3">
             <a href="https://satudata.kulonprogokab.go.id/login" target="_blank" className="bg-slate-500 text-white px-5 py-2 rounded-md text-sm"> OPD Login</a>
           </div>
-
+          */}
         </div>
 
       </div>

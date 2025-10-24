@@ -8,8 +8,8 @@ import { useEffect, useRef, useState } from "react";
 const navItems = [
   { name: "Beranda", path: "/" },
   { name: "Data Statistik", path: "/statistik" },
-  { name: "Data Spasial", path: "#" },
   { name: "Layanan", path: "/layanan" },
+  { name: "Login OPD", path: "/admin/login" },
 ];
 
 const Navbar = () => {

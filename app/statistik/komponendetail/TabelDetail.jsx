@@ -55,7 +55,7 @@ export default function TabelDetail({ datas, years }) {
                   paddingLeft: `${((metadata.level - minLevel) + 1) * 12}px`, // ubah 16 jadi jarak per level
                 }}
               >
-                {metadata.nama_elemen} - {metadata.level}
+                {metadata.nama_elemen}
               </td>
               <td className="border px-2 py-1">{metadata.satuan || "-"}</td>
               {years.map((y) => {

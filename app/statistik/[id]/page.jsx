@@ -39,7 +39,7 @@ export default async function DetailPage({ params, searchParams }) {
           ← Kembali
         </Link>
 
-        <h1 className="text-2xl font-bold">{data.elemen.label}</h1>
+        <h1 className="text-2xl font-bold">{data.kodeHirarkiElemen} - {data.elemen.label}</h1>
         <p className="text-sm text-gray-600 mb-4">
           Satuan: {data.elemen.satuan || "-"} | Instansi:{" "}
           {data.elemen.instansi?.name || "-"}
@@ -51,7 +51,7 @@ export default async function DetailPage({ params, searchParams }) {
           <ExportButtons datas={data.datas} years={years} />
         </div>
 
-        <TabelDetail datas={data.datas} years={years} />
+        <TabelDetail datas={data.childElements} years={years} />
         <KeteranganWarna />
       </div>
     </div>

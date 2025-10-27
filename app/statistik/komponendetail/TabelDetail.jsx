@@ -14,6 +14,9 @@ function getStatusColor(status) {
 }
 
 export default function TabelDetail({ datas, years }) {
+  // console.log('data, year', datas, years);
+  // return;
+
   const rows = Object.entries(datas);
   const [selectedChartData, setSelectedChartData] = useState(null);
 
@@ -48,14 +51,14 @@ export default function TabelDetail({ datas, years }) {
         <tbody>
           {rows.map(([_, { metadata, data }], index) => (
             <tr key={index} className="text-sm">
-              <td className="border px-2 py-1">{metadata.kode}</td>
+              <td className="border px-2 py-1">{metadata.kode_hirarki}</td>
               <td
                 className="border px-2 py-1"
                 style={{
                   paddingLeft: `${((metadata.level - minLevel) + 1) * 12}px`, // ubah 16 jadi jarak per level
                 }}
               >
-                {metadata.nama_elemen}
+                {metadata.label}
               </td>
               <td className="border px-2 py-1">{metadata.satuan || "-"}</td>
               {years.map((y) => {

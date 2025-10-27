@@ -60,16 +60,28 @@ export default function TabelDetail({ datas, years }) {
               <td className="border px-2 py-1">{metadata.satuan || "-"}</td>
               {years.map((y) => {
                 const cell = data[y] || {};
-                return (
-                  <td
-                    key={y}
-                    className={`border px-2 py-1 text-end ${getStatusColor(cell.status)}`}
-                  >
-                    {typeof cell.value === "number" && !isNaN(cell.value)
-                    ? cell.value.toLocaleString("id-ID")
-                    : "-"}
-                  </td>
-                );
+
+                if (cell.status == '4') {
+                  return (
+                    <td
+                      key={y}
+                      className={`border px-2 py-1 text-end ${getStatusColor(cell.status)}`}
+                    >
+                      N/A
+                    </td>
+                  );
+                } else {
+                  return (
+                    <td
+                      key={y}
+                      className={`border px-2 py-1 text-end ${getStatusColor(cell.status)}`}
+                    >
+                      {typeof cell.value === "number" && !isNaN(cell.value)
+                      ? cell.value.toLocaleString("id-ID")
+                      : "-"}
+                    </td>
+                  );
+                }
               })}
               <td className="border px-2 py-1 text-center">
                 <button

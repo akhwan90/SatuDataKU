@@ -17,6 +17,12 @@ export default function TabelDetail({ datas, years }) {
   const rows = Object.entries(datas);
   const [selectedChartData, setSelectedChartData] = useState(null);
 
+  const minLevel = Math.min(
+    ...rows.map(([_, { metadata }]) => metadata.level ?? 0)
+  );
+
+  console.log(rows);
+
   const handleOpenChart = (row) => {
     setSelectedChartData(row); // simpan metadata + data untuk modal
   };
@@ -27,7 +33,7 @@ export default function TabelDetail({ datas, years }) {
 
   return (
     <div className="overflow-x-auto">
-      <table className="min-w-full border border-gray-200">
+      <table className="min-w-full border border-gray-300 [&_*]:border-gray-300">
         <thead>
           <tr className="bg-gray-100 text-sm">
             <th className="border px-2 py-1">Kode</th>
@@ -42,24 +48,33 @@ export default function TabelDetail({ datas, years }) {
         <tbody>
           {rows.map(([_, { metadata, data }], index) => (
             <tr key={index} className="text-sm">
-              <td className="border px-2 py-1 text-center">{index + 1}</td>
-              <td className="border px-2 py-1">{metadata.nama_elemen}</td>
+              <td className="border px-2 py-1">{metadata.kode}</td>
+              <td
+                className="border px-2 py-1"
+                style={{
+                  paddingLeft: `${((metadata.level - minLevel) + 1) * 12}px`, // ubah 16 jadi jarak per level
+                }}
+              >
+                {metadata.nama_elemen} - {metadata.level}
+              </td>
               <td className="border px-2 py-1">{metadata.satuan || "-"}</td>
               {years.map((y) => {
                 const cell = data[y] || {};
                 return (
                   <td
                     key={y}
-                    className={`border px-2 py-1 ${getStatusColor(cell.status)}`}
+                    className={`border px-2 py-1 text-end ${getStatusColor(cell.status)}`}
                   >
-                    {cell.value ?? "-"}
+                    {typeof cell.value === "number" && !isNaN(cell.value)
+                    ? cell.value.toLocaleString("id-ID")
+                    : "-"}
                   </td>
                 );
               })}
               <td className="border px-2 py-1 text-center">
                 <button
                   onClick={() => handleOpenChart({ metadata, data })}
-                  className="text-blue-500 hover:text-blue-700"
+                  className="text-blue-500 hover:text-blue-700 cursor-pointer"
                 >
                   <FaChartLine />
                 </button>

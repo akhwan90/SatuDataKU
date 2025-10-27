@@ -9,6 +9,7 @@ const navItems = [
   { name: "Beranda", path: "/" },
   { name: "Data Statistik", path: "/statistik" },
   { name: "Layanan", path: "/layanan" },
+  { name: "API Docs", path: "/api/documentation" },
   { name: "Login OPD", path: "/admin/login" },
 ];
 

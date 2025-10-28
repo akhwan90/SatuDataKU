@@ -24,8 +24,6 @@ export default function TabelDetail({ datas, years }) {
     ...rows.map(([_, { metadata }]) => metadata.level ?? 0)
   );
 
-  console.log(rows);
-
   const handleOpenChart = (row) => {
     setSelectedChartData(row); // simpan metadata + data untuk modal
   };
@@ -64,35 +62,41 @@ export default function TabelDetail({ datas, years }) {
               {years.map((y) => {
                 const cell = data[y] || {};
 
-                if (cell.status == '4') {
-                  return (
-                    <td
-                      key={y}
-                      className={`border px-2 py-1 text-end ${getStatusColor(cell.status)}`}
-                    >
-                      N/A
-                    </td>
-                  );
+                if (metadata.tipe != 'elemenHeader') {
+                  if (cell.status == '4') {
+                    return (
+                      <td
+                        key={y}
+                        className={`border px-2 py-1 text-end ${getStatusColor(cell.status)}`}
+                      >
+                        N/A
+                      </td>
+                    );
+                  } else {
+                    return (
+                      <td
+                        key={y}
+                        className={`border px-2 py-1 text-end ${getStatusColor(cell.status)}`}
+                      >
+                        {typeof cell.value === "number" && !isNaN(cell.value)
+                        ? cell.value.toLocaleString("id-ID")
+                        : "-"}
+                      </td>
+                    );
+                  }
                 } else {
-                  return (
-                    <td
-                      key={y}
-                      className={`border px-2 py-1 text-end ${getStatusColor(cell.status)}`}
-                    >
-                      {typeof cell.value === "number" && !isNaN(cell.value)
-                      ? cell.value.toLocaleString("id-ID")
-                      : "-"}
-                    </td>
-                  );
+                  return <td key={y} className="bg-slate-500">&nbsp; </td>
                 }
               })}
               <td className="border px-2 py-1 text-center">
-                <button
-                  onClick={() => handleOpenChart({ metadata, data })}
-                  className="text-blue-500 hover:text-blue-700 cursor-pointer"
-                >
-                  <FaChartLine />
-                </button>
+                {metadata.tipe != 'elemenHeader' && (
+                  <button
+                    onClick={() => handleOpenChart({ metadata, data })}
+                    className="text-blue-500 hover:text-blue-700 cursor-pointer"
+                  >
+                    <FaChartLine />
+                  </button>
+                )}
               </td>
             </tr>
           ))}
